@@ -6,6 +6,9 @@ import p5 from "../../public/ring5.jpg";
 import p6 from "../../public/ring6.jpg";
 import p7 from "../../public/ring7.jpg";
 import p8 from "../../public/ring8.jpg";
+import h1 from "../../public/h1.png"
+import h2 from "../../public/h2.png"
+import h3 from "../../public/h3.png"
 
 export const products = {
   "ring-1": {
@@ -13,7 +16,7 @@ export const products = {
     price: 3899,
     oldPrice: 4599,
     discount: "15%",
-    images: [p1, p2],
+    images: [p1, h2,h3],
     shortNote: "Minimal silver ring for everyday elegance.",
     description: "Clean and elegant design suitable for daily wear.",
     details: ["Material: Silver", "Occasion: Daily Wear"],
@@ -24,7 +27,7 @@ export const products = {
     price: 4350,
     oldPrice: 6200,
     discount: "30%",
-    images: [p2, p3],
+    images: [p2, h2,h3],
     shortNote: "Classic gold finish ring.",
     description: "Perfect for festive occasions.",
     details: ["Material: Gold", "Occasion: Party"],
@@ -35,7 +38,7 @@ export const products = {
     price: 43500,
     oldPrice: 60200,
     discount: "28%",
-    images: [p3, p4],
+    images: [p3, h2,h3],
     shortNote: "Luxury kundan ring.",
     description: "Handcrafted kundan jewellery.",
     details: ["Material: Kundan", "Occasion: Wedding"],
@@ -46,7 +49,7 @@ export const products = {
     price: 4399,
     oldPrice: 5899,
     discount: "25%",
-    images: [p4, p5],
+    images: [p4, h2,h3],
     shortNote: "Modern gold ring.",
     description: "Sleek modern design.",
     details: ["Material: Gold"],
@@ -57,7 +60,7 @@ export const products = {
     price: 9999,
     oldPrice: 12999,
     discount: "23%",
-    images: [p5, p6],
+    images:[p5, h2,h3],
     shortNote: "Diamond look ring.",
     description: "Elegant diamond style.",
     details: ["Material: Alloy"],
@@ -68,7 +71,7 @@ export const products = {
     price: 3899,
     oldPrice: 4999,
     discount: "20%",
-    images: [p6, p7],
+    images:[p6, h2,h3],
     shortNote: "Emerald silver ring.",
     description: "Emerald accent jewellery.",
     details: ["Material: Silver"],
@@ -79,7 +82,7 @@ export const products = {
     price: 7499,
     oldPrice: 9999,
     discount: "25%",
-    images: [p7, p8],
+    images: [p7, h2,h3],
     shortNote: "Solitaire ring.",
     description: "Timeless solitaire ring.",
     details: ["Material: Silver"],
@@ -90,7 +93,7 @@ export const products = {
     price: 8599,
     oldPrice: 10999,
     discount: "22%",
-    images: [p8, p1],
+    images: [p8, h2,h3],
     shortNote: "Luxury band ring.",
     description: "Premium gold band.",
     details: ["Material: Gold"],

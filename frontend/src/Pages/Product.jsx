@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { products } from "../Data/products";
@@ -8,7 +8,6 @@ const Product = () => {
   const { id } = useParams();
   const product = products[id];
 
-  // SAFETY CHECK
   if (!product) {
     return (
       <div className="h-screen flex items-center justify-center text-xl">
@@ -25,20 +24,30 @@ const Product = () => {
       <Navbar />
 
       <div className="px-16 py-12">
-        <div className="grid grid-cols-[1fr_1.1fr] gap-20">
+        <div className="grid grid-cols-[1fr_1.15fr] gap-20">
 
-          {/* LEFT IMAGE */}
+          {/* ================= LEFT ================= */}
           <div>
-            <img
-              src={mainImg}
-              alt={product.name}
-              className="w-full h-[440px] object-cover mb-4"
-            />
+            {/* MAIN IMAGE */}
+            <div className="relative mb-4">
+              <img
+                src={mainImg}
+                alt={product.name}
+                className="w-full h-[440px] object-cover"
+              />
 
+              {/* Zoom text */}
+              <div className="absolute bottom-3 left-3 text-xs text-gray-500 flex items-center gap-1">
+                <i className="ri-search-line"></i>
+                Zoom the image with mouse
+              </div>
+            </div>
+
+            {/* THUMBNAILS */}
             <div className="flex gap-3">
-              {product.images.map((img, index) => (
+              {product.images.map((img, i) => (
                 <img
-                  key={index}
+                  key={i}
                   src={img}
                   onClick={() => setMainImg(img)}
                   className={`w-20 h-20 object-cover cursor-pointer border ${
@@ -49,48 +58,127 @@ const Product = () => {
             </div>
           </div>
 
-          {/* RIGHT DETAILS */}
+          {/* ================= RIGHT ================= */}
           <div>
-            <h1 className="text-xl font-serif mb-2">
+            {/* TITLE */}
+            <h1 className="text-[18px] font-serif mb-2">
               {product.name}
             </h1>
 
-            <div className="text-sm mb-4">
+            {/* PRICE */}
+            <div className="flex items-center gap-3 mb-5 text-sm">
               <span className="text-lg font-medium text-[#402d27]">
                 ₹{product.price}
               </span>
-              <span className="line-through text-gray-400 ml-3">
+              <span className="line-through text-gray-400">
                 ₹{product.oldPrice}
               </span>
-              <span className="ml-3 text-red-600">
-                -{product.discount}
+              <span className="text-red-600">
+                {product.discount}
               </span>
             </div>
 
-            {/* Quantity */}
-            <div className="flex items-center gap-4 mb-5">
-              <button onClick={() => qty > 1 && setQty(qty - 1)}>−</button>
-              <span>{qty}</span>
-              <button onClick={() => setQty(qty + 1)}>+</button>
-            </div>
+            {/* QTY + ICONS */}
+            {/* ===== QTY + ADD TO CART + ICONS ===== */}
+<div className="flex items-center gap-3 mb-4">
 
-            <button className="w-full bg-[#5b1f14] text-white py-3 mb-3">
-              ADD TO CART
-            </button>
+  {/* Quantity Box */}
+  <div className="flex items-center border border-[#c7a4a0] rounded-md overflow-hidden">
+    <button className="px-4 py-2 text-lg">+</button>
+    <span className="px-6 py-2 border-x">1</span>
+    <button className="px-4 py-2 text-lg">−</button>
+  </div>
 
-            <button className="w-full border border-[#5b1f14] py-3 mb-6">
-              BUY IT NOW
-            </button>
+  {/* Add to Cart */}
+  <button className="flex-1 bg-[#6b1f0f] text-white py-3 uppercase tracking-wide text-sm rounded-md">
+    ADD TO CART
+  </button>
 
-            <p className="text-sm text-gray-600 mb-6">
-              {product.description}
+  {/* Wishlist */}
+  <button className="w-12 h-12 border rounded-md flex items-center justify-center">
+    <i className="ri-heart-line text-lg"></i>
+  </button>
+
+  {/* Share */}
+  <button className="w-12 h-12 border rounded-md flex items-center justify-center">
+    <i className="ri-share-line text-lg"></i>
+  </button>
+</div>
+
+{/* ===== BUY IT NOW ===== */}
+
+ 
+<Link
+  to="/payment"
+  className="block w-full bg-[#6b1f0f] text-white py-4 uppercase tracking-wide text-sm rounded-md text-center"
+>
+  BUY IT NOW
+</Link>
+
+
+
+
+            
+
+            {/* NOTE */}
+            <p className="text-xs text-gray-600 mt-6">
+              This feature is only valid for domestic deliveries.
+              For international deliveries, expect your package within 7–10 days.
             </p>
 
-            <ul className="list-disc pl-5 text-sm text-gray-600">
-              {product.details.map((d, i) => (
-                <li key={i}>{d}</li>
-              ))}
-            </ul>
+            {/* ABOUT */}
+            <div className=" pt-4 mb-4">
+              <h4 className="text-sm font-medium mb-2">
+                ABOUT PRODUCT
+              </h4>
+
+              <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                {product.description}
+              </p>
+
+              <ul className="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                {product.details.map((d, i) => (
+                  <li key={i}>{d}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* ACCORDION SECTIONS */}
+            {[
+              "AVAILABLE OFFERS",
+              "SHIPPING POLICY",
+              "RETURNS POLICY",
+              "IMPORTER / MARKETER / PACKER DETAILS",
+            ].map((item) => (
+              <div
+                key={item}
+                className="border-t py-3 text-sm flex justify-between items-center cursor-pointer"
+              >
+                {item}
+                <i className="ri-arrow-down-s-line"></i>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ================= FREQUENTLY BOUGHT ================= */}
+        <div className="mt-20">
+          <h3 className="text-sm mb-4">
+            FREQUENTLY BOUGHT TOGETHER
+          </h3>
+
+          <div className="flex items-center gap-6">
+            {product.images.slice(0, 3).map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                className="w-20 h-20 object-cover border"
+              />
+            ))}
+
+            <button className="bg-[#c9a44a] text-white px-6 py-2 text-xs">
+              ADD SELECTED TO CART
+            </button>
           </div>
         </div>
       </div>
