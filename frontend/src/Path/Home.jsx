@@ -9,7 +9,7 @@ import Footer from "../components/Footer";
 const Home = () => {
   return (
     <div className="bg-amber-200">
-      <Navbar />
+      
       <Hero />
       <Category />
       <PriceSection />
