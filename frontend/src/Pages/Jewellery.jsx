@@ -1,15 +1,12 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 import ringHero from "../../public/ringBanner.png";
 import { products } from "../Data/products";
 
-const Jewellery = () => {
+const Jewellery = ({ addToCart }) => {
   return (
     <section className="bg-[#fffdf5]">
-      <Navbar />
-
       {/* ================= HERO ================= */}
       <div className="px-16 pt-10 pb-14">
         <div className="bg-[#f6f3ee] rounded-xl overflow-hidden">
@@ -47,10 +44,8 @@ const Jewellery = () => {
 
       {/* ================= CONTENT ================= */}
       <div className="px-16 pb-20 grid grid-cols-[240px_1fr] gap-10">
-
         {/* ========== FILTER SIDEBAR ========== */}
         <aside className="text-sm space-y-8 text-gray-600">
-
           <div>
             <h4 className="font-medium text-[#402d27] uppercase text-xs mb-3">
               Shop by Type
@@ -88,12 +83,10 @@ const Jewellery = () => {
               <li><input type="checkbox" /> 2000 & above</li>
             </ul>
           </div>
-
         </aside>
 
         {/* ========== PRODUCT GRID ========== */}
         <div className="grid grid-cols-4 gap-x-8 gap-y-12">
-
           {Object.entries(products).map(([id, product]) => (
             <Link
               key={id}
@@ -124,18 +117,25 @@ const Jewellery = () => {
                 </span>
               </div>
 
-              {/* Button */}
+              {/* ADD TO CART BUTTON */}
               <button
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.preventDefault(); // stop navigation
+                  addToCart({
+                    id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.images[0],
+                    qty: 1,
+                  });
+                }}
                 className="w-full bg-[#c9a44a] text-white text-[11px] py-2 tracking-wide"
               >
                 ADD TO CART
               </button>
             </Link>
           ))}
-
         </div>
-
       </div>
 
       <Footer />
@@ -144,4 +144,3 @@ const Jewellery = () => {
 };
 
 export default Jewellery;
-

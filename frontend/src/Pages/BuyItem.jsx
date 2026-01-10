@@ -8,7 +8,7 @@ import p2 from "../../public/ring2.jpg";
 const BuyItem = () => {
   return (
     <section className="bg-[#fffdf5] min-h-screen">
-      <Navbar />
+     
 
       {/* ===== PAGE TITLE ===== */}
       <h2 className="text-center tracking-[0.35em] text-sm text-[#9c1c2f] mt-10 mb-12">

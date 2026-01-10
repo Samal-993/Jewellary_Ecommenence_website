@@ -16,11 +16,15 @@ connectDB()
 
 //middlewares
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
+
 
 
 //api endpoints
-app.use('/api/user', userRouter)
+app.use('/api/users', userRouter)
 app.use("/api/products", productRoute);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
