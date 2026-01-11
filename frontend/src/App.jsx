@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import Home from "./Path/Home";
-import Jewellery from "./Pages/Jewellery";
-import Product from "./Pages/Product";
-import BuyItem from "./Pages/BuyItem";
-import Navbar from "./components/Navbar";
-import CartSection from "./Pages/CartSection";
-import SareesSection from "./sarees/SareesSection";
-import OrderModel from "./api/Orderapi";
+import Home from "./Path/Home.jsx";
+import Jewellery from "./Pages/Jewellery.jsx";
+import Product from "./Pages/Product.jsx";
+import BuyItem from "./Pages/BuyItem.jsx";
+import Navbar from "./components/Navbar.jsx";
+import CartSection from "./Pages/Cartsection.jsx";
+import SareesSection from "./sarees/SareesSection.jsx";
+import OrderModel from "./api/Orderapi.jsx";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
