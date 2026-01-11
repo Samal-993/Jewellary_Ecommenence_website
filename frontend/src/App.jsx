@@ -10,10 +10,14 @@ import CartSection from "./Pages/CartSection";
 import SareesSection from "./sarees/SareesSection";
 import OrderModel from "./api/Orderapi";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   const [cartItems, setCartItems] = useState([]);
   const [openCart, setOpenCart] = useState(false);
 
+  // ✅ Load cart from localStorage (ONCE)
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
@@ -21,18 +25,7 @@ const App = () => {
     }
   }, []);
 
-   useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-  }, []);
-
-  // Save cart to localStorage on change
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
-
+  // ✅ Save cart to localStorage on change
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
@@ -40,6 +33,7 @@ const App = () => {
   const addToCart = (product) => {
     setCartItems((prev) => {
       const existing = prev.find((p) => p.id === product.id);
+
       if (existing) {
         return prev.map((p) =>
           p.id === product.id
@@ -47,8 +41,10 @@ const App = () => {
             : p
         );
       }
+
       return [...prev, product];
     });
+
     setOpenCart(true);
   };
 
@@ -70,10 +66,13 @@ const App = () => {
 
   return (
     <>
+      {/* Navbar */}
       <Navbar
         cartCount={cartItems.reduce((a, c) => a + c.qty, 0)}
         openCart={() => setOpenCart(true)}
       />
+
+      {/* Cart Sidebar */}
       <CartSection
         openCart={openCart}
         setOpenCart={setOpenCart}
@@ -81,14 +80,36 @@ const App = () => {
         removeFromCart={removeFromCart}
         updateQty={updateQty}
       />
+
+      {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/jewellery" element={<Jewellery addToCart={addToCart} />} />
-        <Route path="/product/:id" element={<Product addToCart={addToCart} />} />
-        <Route path="/payment" element={<BuyItem cartItems={cartItems} />} />
+        <Route
+          path="/jewellery"
+          element={<Jewellery addToCart={addToCart} />}
+        />
+        <Route
+          path="/product/:id"
+          element={<Product addToCart={addToCart} />}
+        />
+        <Route
+          path="/payment"
+          element={<BuyItem cartItems={cartItems} />}
+        />
         <Route path="/sarees" element={<SareesSection />} />
         <Route path="/orders" element={<OrderModel />} />
       </Routes>
+
+      {/* ✅ TOASTER (GLOBAL) */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
     </>
   );
 };

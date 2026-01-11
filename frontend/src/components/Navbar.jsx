@@ -3,15 +3,19 @@ import logo from "../../public/logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import LoginModal from "../Path/LoginModel";
 import CreateAccountModal from "../Path/CreateAccountModal";
+import { toast } from "react-toastify";
 
-const menuItemClass = "relative cursor-pointer leading-none flex flex-col items-center text-gray-600";
+const menuItemClass =
+  "relative cursor-pointer leading-none flex flex-col items-center text-gray-600";
 
 const Navbar = ({ cartCount, openCart }) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
@@ -20,9 +24,15 @@ const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
     setIsLoggedIn(false);
     setOpenUserMenu(false);
-    window.location.reload();
+
+    toast.success("Logged out successfully");
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   };
 
   return (
@@ -31,9 +41,13 @@ const navigate = useNavigate();
         {/* TOP BAR */}
         <div className="flex items-center justify-between px-10 py-4">
           <i className="ri-menu-line text-xl cursor-pointer"></i>
+
           <img src={logo} alt="Pareenita" className="h-22 object-contain" />
+
           <div className="flex items-center gap-5 text-lg relative">
             <i className="ri-search-line cursor-pointer"></i>
+
+            {/* USER ICON */}
             <div className="relative">
               <i
                 className="ri-user-6-line cursor-pointer"
@@ -45,17 +59,18 @@ const navigate = useNavigate();
                   }
                 }}
               ></i>
+
               {isLoggedIn && openUserMenu && (
                 <div className="absolute right-0 mt-2 w-36 bg-white border shadow-md text-sm z-50">
                   <p
-  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-  onClick={() => {
-    setOpenUserMenu(false);
-    navigate("/orders");
-  }}
->
-  Orders
-</p>
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      setOpenUserMenu(false);
+                      navigate("/orders");
+                    }}
+                  >
+                    Orders
+                  </p>
                   <p
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-600"
                     onClick={handleLogout}
@@ -65,7 +80,10 @@ const navigate = useNavigate();
                 </div>
               )}
             </div>
+
             <i className="ri-heart-line cursor-pointer"></i>
+
+            {/* CART */}
             <div className="relative cursor-pointer" onClick={openCart}>
               <i className="ri-shopping-bag-line"></i>
               {cartCount > 0 && (
@@ -76,6 +94,8 @@ const navigate = useNavigate();
             </div>
           </div>
         </div>
+
+        {/* MENU */}
         <div className="w-full h-[1px] bg-black/10"></div>
         <div className="flex items-center justify-center gap-10 h-12 text-[11px] tracking-[0.18em] font-medium">
           {[
@@ -88,11 +108,19 @@ const navigate = useNavigate();
             <NavLink
               key={item.name}
               to={item.path}
-              className={({ isActive }) => `${menuItemClass} ${isActive ? "text-black" : "text-gray-600"}`}
+              className={({ isActive }) =>
+                `${menuItemClass} ${
+                  isActive ? "text-black" : "text-gray-600"
+                }`
+              }
             >
               {({ isActive }) => (
                 <>
-                  <span className={`absolute -top-2 w-1.5 h-1.5 rounded-full bg-[#7a1f16] ${isActive ? "opacity-100" : "opacity-0"}`}></span>
+                  <span
+                    className={`absolute -top-2 w-1.5 h-1.5 rounded-full bg-[#7a1f16] ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                  ></span>
                   {item.name}
                 </>
               )}
@@ -103,6 +131,8 @@ const navigate = useNavigate();
           </span>
         </div>
       </nav>
+
+      {/* MODALS */}
       <LoginModal
         open={openLogin}
         onClose={() => setOpenLogin(false)}
@@ -111,6 +141,7 @@ const navigate = useNavigate();
           setOpenCreate(true);
         }}
       />
+
       <CreateAccountModal
         open={openCreate}
         onClose={() => setOpenCreate(false)}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Footer from "../components/Footer";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 const BuyItem = ({ cartItems = [] }) => {
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const navigate = useNavigate();
@@ -12,28 +12,29 @@ const BuyItem = ({ cartItems = [] }) => {
     0
   );
 
-  const handlePayNow = async () => {
-    if (cartItems.length === 0) {
-      alert("Cart is empty");
-      return;
-    }
+ 
+const handlePayNow = async () => {
+  if (cartItems.length === 0) {
+    toast.error("Cart is empty");
+    return;
+  }
 
-    try {
-      await API.post("/orders", {
-        items: cartItems,
-        totalAmount: subtotal,
-        paymentMethod,
-      });
+  try {
+    await API.post("/orders", {
+      items: cartItems,
+      totalAmount: subtotal,
+      paymentMethod,
+    });
 
-      alert("Order placed successfully");
+    toast.success("Order placed successfully");
 
-      window.dispatchEvent(new Event("cart-clear"));
-      navigate("/orders");
-    } catch (err) {
-      console.log("ORDER ERROR 👉", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Order failed");
-    }
-  };
+    localStorage.removeItem("cart"); // 🔥 important
+    navigate("/orders");
+  } catch (err) {
+    console.log("ORDER ERROR 👉", err.response?.data || err.message);
+    toast.error(err.response?.data?.message || "Order failed");
+  }
+};
 
   return (
     <section className="bg-[#fffdf5] min-h-screen">

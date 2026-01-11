@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import API from "../api/axios";
+import { toast } from "react-toastify";
 
 const CreateAccountModal = ({ open, onClose, onLogin }) => {
   const [name, setName] = useState("");
@@ -9,26 +10,35 @@ const CreateAccountModal = ({ open, onClose, onLogin }) => {
   if (!open) return null;
 
   const handleRegister = async () => {
+    if (!name || !email || !password) {
+      toast.error("All fields are required");
+      return;
+    }
+
     try {
       await API.post("/users/register", {
         name,
         email,
         password,
       });
-      alert("Account created successfully");
+
+      toast.success("Account created successfully");
       onClose();
-      onLogin(); // go to login
+      onLogin(); // switch to login modal
     } catch (err) {
-      alert(err.response?.data?.message || "Register failed");
+      toast.error(err.response?.data?.message || "Register failed");
     }
   };
 
   return (
-     <>
+    <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
 
       <div className="fixed top-0 right-0 h-full w-[380px] bg-white z-50 p-6">
-        <h2 className="text-xs mb-6">CREATE ACCOUNT</h2>
+        <div className="flex justify-between mb-6">
+          <p className="text-xs tracking-widest">CREATE ACCOUNT</p>
+          <button onClick={onClose}>✕</button>
+        </div>
 
         <input
           placeholder="Name"
@@ -54,7 +64,7 @@ const CreateAccountModal = ({ open, onClose, onLogin }) => {
 
         <button
           onClick={handleRegister}
-          className="w-full bg-[#d7a99a] py-3 text-sm"
+          className="w-full bg-[#d7a99a] text-white py-3 text-sm"
         >
           CREATE ACCOUNT
         </button>
@@ -70,4 +80,4 @@ const CreateAccountModal = ({ open, onClose, onLogin }) => {
   );
 };
 
-export default CreateAccountModal
+export default CreateAccountModal;

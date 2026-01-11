@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { products } from "../Data/products";
-
+import { toast } from "react-toastify";
 const Product = ({ addToCart }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const Product = ({ addToCart }) => {
     if (!token) {
       // ❌ Not logged in → open login modal
       window.dispatchEvent(new Event("open-login"));
-      alert("please login")
+      toast.success("please login");
     } else {
       // ✅ Logged in → go to payment
 
