@@ -24,15 +24,20 @@ const Navbar = ({ cartCount, openCart }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("cart"); // Clear cart on logout
 
     setIsLoggedIn(false);
     setOpenUserMenu(false);
 
     toast.success("Logged out successfully");
 
-    setTimeout(() => {
-      window.location.reload();
-    }, 800);
+    // ✅ Navigate to home instead of reload
+    navigate("/");
+  };
+
+  // ✅ Function to update login state after successful login
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
   };
 
   return (
@@ -42,7 +47,12 @@ const Navbar = ({ cartCount, openCart }) => {
         <div className="flex items-center justify-between px-10 py-4">
           <i className="ri-menu-line text-xl cursor-pointer"></i>
 
-          <img src={logo} alt="Pareenita" className="h-22 object-contain" />
+          <img 
+            src={logo} 
+            alt="Pareenita" 
+            className="h-22 object-contain cursor-pointer"
+            onClick={() => navigate("/")}
+          />
 
           <div className="flex items-center gap-5 text-lg relative">
             <i className="ri-search-line cursor-pointer"></i>
@@ -140,6 +150,7 @@ const Navbar = ({ cartCount, openCart }) => {
           setOpenLogin(false);
           setOpenCreate(true);
         }}
+        onLoginSuccess={handleLoginSuccess}
       />
 
       <CreateAccountModal
@@ -153,5 +164,4 @@ const Navbar = ({ cartCount, openCart }) => {
     </>
   );
 };
-
-export default Navbar;
+export default Navbar

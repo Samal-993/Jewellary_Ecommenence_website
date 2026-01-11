@@ -1,6 +1,9 @@
 import React from "react";
-import b1 from "../../public/b1.jpg"
-import b2 from "../../public/b2.jpg"
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import b1 from "../../public/b1.jpg";
+import b2 from "../../public/b2.jpg";
+
 const CartSection = ({
   openCart,
   setOpenCart,
@@ -8,10 +11,31 @@ const CartSection = ({
   removeFromCart,
   updateQty,
 }) => {
+  const navigate = useNavigate();
+  
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
   );
+
+  const handleCheckout = () => {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      toast.error("Please login to checkout");
+      setOpenCart(false);
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      toast.error("Cart is empty");
+      return;
+    }
+
+    // ✅ Navigate to payment page
+    setOpenCart(false);
+    navigate("/payment");
+  };
 
   return (
     <>
@@ -59,6 +83,7 @@ const CartSection = ({
               >
                 <img
                   src={item.image}
+                  alt={item.name}
                   className="w-20 h-20 object-cover bg-[#f6f3ee]"
                 />
 
@@ -117,6 +142,7 @@ const CartSection = ({
                     <div className="flex items-center gap-3">
                       <img
                         src={b1}
+                        alt="Gift Bag"
                         className="w-10 h-10 object-cover"
                       />
                       <div className="text-xs">
@@ -133,6 +159,7 @@ const CartSection = ({
                     <div className="flex items-center gap-3">
                       <img
                         src={b2}
+                        alt="Jewellery Organizer"
                         className="w-10 h-10 object-cover"
                       />
                       <div className="text-xs">
@@ -164,7 +191,10 @@ const CartSection = ({
                 <span>₹ {subtotal}</span>
               </div>
 
-              <button className="w-full bg-[#c9a44a] text-black py-3 text-sm tracking-widest">
+              <button 
+                onClick={handleCheckout}
+                className="w-full bg-[#c9a44a] text-black py-3 text-sm tracking-widest hover:bg-[#b89340] transition-colors"
+              >
                 Checkout
               </button>
 
@@ -180,5 +210,3 @@ const CartSection = ({
 };
 
 export default CartSection;
-
-
