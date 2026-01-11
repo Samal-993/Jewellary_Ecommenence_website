@@ -4,8 +4,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
+  return jwt.sign(
+    { id },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" } // ✅ ALWAYS add expiry
+  );
 };
+
 
 // Route for user login
 const loginUser = async (req, res) => {
@@ -13,25 +18,42 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({ email });
-
     if (!user) {
-      return res.json({ success: false, message: "User not found" });
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-
-    if (isMatch) {
-      const token = createToken(user._id);
-      res.json({ success: true, token });
-    } else {
-      res.json({ success: false, message: "Invalid credentials" });
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
     }
+
+    const token = createToken(user._id);
+
+    res.status(200).json({
+      success: true,
+      token, // ✅ PURE STRING
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      },
+    });
 
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
+
 
 // Route for user register
 const registerUser = async (req, res) => {

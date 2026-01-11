@@ -15,7 +15,6 @@ const CreateAccountModal = ({ open, onClose, onLogin }) => {
         email,
         password,
       });
-
       alert("Account created successfully");
       onClose();
       onLogin(); // go to login
@@ -25,7 +24,7 @@ const CreateAccountModal = ({ open, onClose, onLogin }) => {
   };
 
   return (
-    <>
+     <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
 
       <div className="fixed top-0 right-0 h-full w-[380px] bg-white z-50 p-6">
@@ -71,4 +70,4 @@ const CreateAccountModal = ({ open, onClose, onLogin }) => {
   );
 };
 
-export default CreateAccountModal;
+export default CreateAccountModal

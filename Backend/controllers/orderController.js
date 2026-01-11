@@ -1,50 +1,44 @@
-import Cart from "../models/cartModel.js";
 import Order from "../models/OrderModel.js";
-import Product from "../models/productModel.js";
 
-export const placeOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
   try {
-    // 1️⃣ Get user's cart
-    const cart = await Cart.findOne({ userId: req.user.id });
+    const { items, totalAmount, paymentMethod } = req.body;
 
-    if (!cart || cart.items.length === 0) {
-      return res.status(400).json({ message: "Cart is empty" });
-    }
-
-    let totalAmount = 0;
-    let orderItems = [];
-
-    // 2️⃣ Calculate total from cart
-    for (let item of cart.items) {
-      const product = await Product.findById(item.productId);
-
-      if (!product) continue;
-
-      const itemTotal = product.price * item.quantity;
-      totalAmount += itemTotal;
-
-      orderItems.push({
-        productId: product._id,
-        name: product.name,
-        price: product.price,
-        quantity: item.quantity,
+    if (!items || items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No items in order",
       });
     }
 
-    // 3️⃣ Create order
     const order = await Order.create({
-      userId: req.user.id,
-      items: orderItems,
+      user: req.user.id, // 🔥 IMPORTANT
+      items,
       totalAmount,
-      status: "Placed",
+      paymentMethod,
     });
 
-    // 4️⃣ Clear cart
-    await Cart.deleteOne({ userId: req.user.id });
-
-    res.status(201).json(order);
+    res.status(201).json({
+      success: true,
+      order,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to place order" });
+    console.log("ORDER CREATE ERROR 👉", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to create order",
+    });
+  }
+};
+
+// Get all orders for the logged-in user
+export const getMyOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
+    res.json({ orders });
+  } catch (error) {
+    console.log("ORDER FETCH ERROR 👉", error);
+    res.status(500).json({ message: "Failed to fetch orders" });
   }
 };

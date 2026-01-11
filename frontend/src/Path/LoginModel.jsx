@@ -8,19 +8,18 @@ const LoginModal = ({ open, onClose, onCreateAccount }) => {
   if (!open) return null;
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Email and password are required");
+      return;
+    }
     try {
       const res = await API.post("/users/login", {
         email,
         password,
       });
-
-      // 🔴 SAVE USER + TOKEN
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-
       onClose();
-
-      // 🔴 FORCE NAVBAR UPDATE
       window.location.reload();
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
@@ -28,7 +27,7 @@ const LoginModal = ({ open, onClose, onCreateAccount }) => {
   };
 
   return (
-    <>
+   <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
 
       <div className="fixed top-0 right-0 h-full w-[380px] bg-white z-50 p-6">
