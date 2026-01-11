@@ -7,35 +7,33 @@ import productRoute from "./routes/productRoutes.js"
 import cartRoutes from "./routes/cartRoutes.js"
 import orderRoutes from "./routes/orderRoutes.js"
 
-
 //app config
 const app = express()
 const port = process.env.PORT || 4000
 connectDB()
 
-
 //middlewares
 app.use(express.json())
-// Use an array of allowed origins
+
 const allowedOrigins = [
   "http://localhost:5173",
- "https://jewellary-ecommenence-website.vercel.app", // <-- your frontend deploy
+  "https://jewellary-website.onrender.com", // <-- Your frontend domain
 ];
 
-app.use(cors({
-  origin: function(origin, callback){
-    // allow requests with no origin 
-    // (like mobile apps, curl, postman)
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.includes(origin)){
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-}));
-
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
 
 //api endpoints
 app.use('/api/users', userRouter)
@@ -43,9 +41,8 @@ app.use("/api/products", productRoute);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 
-
-app.get('/',(req,res) => {
-    res.send("API Wording")
+app.get('/', (req, res) => {
+  res.send("API Wording")
 })
 
-app.listen(port, () => console.log('Server started on PORT :'+ port))
+app.listen(port, () => console.log('Server started on PORT :' + port))
