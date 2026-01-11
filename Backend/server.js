@@ -16,14 +16,13 @@ connectDB()
 app.use(express.json())
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://jewellary-website.onrender.com", // <-- Your frontend domain
+  "https://jewellary-website.onrender.com",
+  "http://localhost:5173" // for local development, optional
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (mobile apps, curl, etc.)
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
@@ -34,6 +33,7 @@ app.use(
     credentials: true,
   })
 );
+
 
 //api endpoints
 app.use('/api/users', userRouter)
