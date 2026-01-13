@@ -18,6 +18,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   const allowedOrigins = [
     "http://localhost:5173",
+    "https://jewellarywebsite.onrender.com",  // ✅ ADD THIS LINE
     "https://jewellarywebsite-lpqf.onrender.com",
     "https://jewellary-website.onrender.com"
   ];
