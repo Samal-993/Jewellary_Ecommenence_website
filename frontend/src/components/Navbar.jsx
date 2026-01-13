@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../public/logo.png";
-import { NavLink, useNavigate } from "react-router-dom";
+import {
+  NavLink,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
 import LoginModal from "../Path/LoginModel";
 import CreateAccountModal from "../Path/CreateAccountModal";
 import { toast } from "react-toastify";
@@ -15,6 +20,7 @@ const Navbar = ({ cartCount, openCart }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -24,18 +30,15 @@ const Navbar = ({ cartCount, openCart }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.removeItem("cart"); // Clear cart on logout
+    localStorage.removeItem("cart");
 
     setIsLoggedIn(false);
     setOpenUserMenu(false);
 
     toast.success("Logged out successfully");
-
-    // ✅ Navigate to home instead of reload
     navigate("/");
   };
 
-  // ✅ Function to update login state after successful login
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
@@ -44,16 +47,29 @@ const Navbar = ({ cartCount, openCart }) => {
     <>
       <nav className="bg-[#fffdf5] border-b border-black/10">
         {/* TOP BAR */}
-        <div className="flex items-center justify-between px-10 py-4">
-          <i className="ri-menu-line text-xl cursor-pointer"></i>
+        <div className="flex items-center px-10 py-4 cursor-pointer">
 
-          <img 
-            src={logo} 
-            alt="Pareenita" 
-            className="h-22 object-contain cursor-pointer"
-            onClick={() => navigate("/")}
-          />
+          {/* LEFT (Arrow space reserved) */}
+          <div className="w-8">
+            {location.pathname !== "/" && (
+              <i
+                onClick={() => navigate(-1)}
+                className="ri-arrow-left-line font-bold text-2xl cursor-pointer"
+              ></i>
+            )}
+          </div>
 
+          {/* CENTER (Logo always centered) */}
+          <div className="flex-1 flex justify-center">
+            <img
+              src={logo}
+              alt="Pareenita"
+              className="h-22 object-contain cursor-pointer"
+              onClick={() => navigate("/")}
+            />
+          </div>
+
+          {/* RIGHT (Icons) */}
           <div className="flex items-center gap-5 text-lg relative">
             <i className="ri-search-line cursor-pointer"></i>
 
@@ -94,7 +110,10 @@ const Navbar = ({ cartCount, openCart }) => {
             <i className="ri-heart-line cursor-pointer"></i>
 
             {/* CART */}
-            <div className="relative cursor-pointer" onClick={openCart}>
+            <div
+              className="relative cursor-pointer"
+              onClick={openCart}
+            >
               <i className="ri-shopping-bag-line"></i>
               {cartCount > 0 && (
                 <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-black text-white rounded-full text-[10px] text-center">
@@ -107,6 +126,7 @@ const Navbar = ({ cartCount, openCart }) => {
 
         {/* MENU */}
         <div className="w-full h-[1px] bg-black/10"></div>
+
         <div className="flex items-center justify-center gap-10 h-12 text-[11px] tracking-[0.18em] font-medium">
           {[
             { name: "SAREES", path: "/sarees" },
@@ -164,4 +184,5 @@ const Navbar = ({ cartCount, openCart }) => {
     </>
   );
 };
-export default Navbar
+
+export default Navbar;

@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import hero from "../../public/hero.png";
 
 const Hero = () => {
@@ -27,13 +28,13 @@ const Hero = () => {
 
           <h1 className="text-[94px] leading-[1.05] font-serif text-[#8c7b6d]">Redefined</h1>
 
-          <p className="mt-4 text-sm tracking-wide text-[#6b5a4d]">
+          <p className="mb-7 text-sm tracking-wide text-[#6b5a4d]">
             From Whispers To Wonders
           </p>
 
-          <button className="mt-8 px-8 py-3 border border-[#3a2f2a] text-sm tracking-widest text-[#3a2f2a] hover:bg-[#3a2f2a] hover:text-white rounded-3xl transition">
+          <Link to="/jewellery" className="mt-1 px-8 py-3 border border-[#3a2f2a] text-sm tracking-widest text-[#3a2f2a] hover:bg-[#3a2f2a] hover:text-white rounded-3xl transition">
             SHOP NOW
-          </button>
+          </Link>
         </div>
       </div>
 

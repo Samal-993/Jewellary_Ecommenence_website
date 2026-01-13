@@ -16,6 +16,7 @@ import s11 from "../../public/s11.jpg";
 
 import s13 from "../../public/s13.jpg";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -36,9 +37,9 @@ const HomePage = () => {
             <p className="tracking-widest text-sm mb-4">
               UP TO 50% OFF
             </p>
-            <button className="bg-[#7a1f16] text-white px-8 py-3 text-xs tracking-widest">
+            <Link to="/jewellery" className="bg-[#7a1f16] text-white px-8 py-3 text-xs tracking-widest">
               SHOP NOW
-            </button>
+            </Link>
           </div>
         </div>
       </div>
